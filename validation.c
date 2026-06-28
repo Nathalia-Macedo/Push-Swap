@@ -6,13 +6,14 @@
 /*   By: nde-mace <nde-mace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:50:00 by nde-mace          #+#    #+#             */
-/*   Updated: 2026/06/03 19:47:57 by nde-mace         ###   ########.fr       */
+/*   Updated: 2026/06/28 15:18:46 by nde-mace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "libt/libft/libft.h"
+#include "libft/libft.h"
+#include "push_swap.h"
 
 int	ft_error(void)
 {
@@ -60,21 +61,26 @@ int	ft_is_dup(int argc, char **argv)
 	return (1);
 }
 
+int ft_check_all_numbers(int argc, char **argv)
+{	
+	int	i;
+	
+	i = 1;
+    while (i < argc)
+    {
+        if (!ft_isnumber(argv[i]))
+            return (0);
+        i++;
+    }
+	return (1);
+}
 int	*ft_valid(int argc, char **argv)
 {
 	int	i;
 	int	*dest;
+	long num;
 
-	if (argc < 2)
-		return (NULL);
-	i = 1;
-	while (i < argc)
-	{
-		if (!ft_isnumber(argv[i]))
-			return (NULL);
-		i++;
-	}
-	if (!ft_is_dup(argc, argv))
+	if (argc < 2 || !ft_check_all_numbers(argc, argv) || !ft_is_dup(argc, argv))
 		return (NULL);
 	dest = (int *)malloc(sizeof(int) * (argc - 1));
 	if (!dest)
@@ -82,7 +88,14 @@ int	*ft_valid(int argc, char **argv)
 	i = 1;
 	while (i < argc)
 	{
-		dest[i - 1] = ft_atoi(argv[i]);
+		num = ft_atol(argv[i]);
+		if (num == 3000000000L)
+		{
+			free(dest);
+			ft_error();
+			return (NULL);
+		}
+		dest[i - 1] = num;
 		i++;
 	}
 	return (dest);

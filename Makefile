@@ -1,9 +1,12 @@
 NAME = push_swap
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I libt/libft
-LIBFT_DIR = libt/libft
+CFLAGS = -Wall -Wextra -Werror -I. -I libft
+LIBFT_DIR = libft
 
-SRCS = push_swap.c validation.c utils.c
+SRCS = main.c validation.c utils.c sort_small.c \
+       commands/push.c commands/rotate.c commands/rotate_reverse.c commands/swap.c \
+       initialization_stack/initialization_t_stack.c \
+       operations/push.c operations/rotate.c operations/rev_rotate.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

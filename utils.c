@@ -6,39 +6,46 @@
 /*   By: nde-mace <nde-mace@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/03 19:50:00 by nde-mace          #+#    #+#             */
-/*   Updated: 2026/06/09 14:35:52 by nde-mace         ###   ########.fr       */
+/*   Updated: 2026/06/28 17:15:46 by nde-mace         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libt/libft/libft.h"
+#include "libft/libft.h"
 #include "push_swap.h"
 
-double	ft_chaos(const int *numbers, int len)
+int	ft_isdigit(int c)
 {
-	int	j;
-	int	k;
-	int	hits;
-	int	mistakes;
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+double  ft_chaos(const int *numbers, int len)
+{
+    int j;
+    int k;
+    int mistakes;
+    int total_pairs;
 
-	k = 0;
-	hits = 0;
-	mistakes = 0;
-	if (!numbers || len <= 1)
-		return (0.0);
-	while (k < len)
-	{
-		j = k + 1;
-		while (j < len)
-		{
-			if (numbers[k] > numbers[j++])
-				mistakes++;
-			else
-				hits++;
-		}
-		k++;
-	}
-	return ((double)hits / (hits + mistakes));
+    k = 0;
+    mistakes = 0;
+    total_pairs = 0;
+    if (!numbers || len <= 1)
+        return (0.0);
+    while (k < len)
+    {
+        j = k + 1;
+        while (j < len)
+        {
+            total_pairs++; // Conta cada par testado, exatamente como o assunto pede
+            if (numbers[k] > numbers[j])
+                mistakes++;
+            j++; // Incremento limpo e isolado no fim do loop interno
+        }
+        k++;
+    }
+    // Divide os erros pelo total de pares possíveis
+    return ((double)mistakes / total_pairs);
 }
 
 void	orchestration_sorting(t_stack **a, t_stack **b, int len, int *numbers)
@@ -48,10 +55,10 @@ void	orchestration_sorting(t_stack **a, t_stack **b, int len, int *numbers)
 	taxa_chaos = ft_chaos(numbers, len);
 	if (taxa_chaos < 0.2)
 		ft_sort_small(a, b);
-	else if (taxa_chaos <= 0.5)
+	/* else if (taxa_chaos <= 0.5)
 		ft_sort_mechanical(a, b);
 	else
-		ft_sort_complex(a, b);
+		ft_sort_complex(a, b); */
 }
 
 int	ft_stack_len(t_stack **a)
@@ -78,7 +85,7 @@ void	ft_sort_small(t_stack **a, t_stack **b)
 
 	while (ft_stack_len(a) > 3)
 	{
-		min_pos = ft_find_min_pos(*a);
+		min_pos = ft_find_min_pos(a);
 		middle = ft_stack_len(a) / 2;
 		if (min_pos <= middle)
 		{
@@ -93,7 +100,7 @@ void	ft_sort_small(t_stack **a, t_stack **b)
 			while (min_pos > 0)
 			{
 				rra(a);
-				min_pos = ft_find_min_pos(*a);
+				min_pos = ft_find_min_pos(a);
 			}
 		}
 		pb(a, b);
